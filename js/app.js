@@ -109,15 +109,35 @@ function openWA() {
 }
 
 /* ============================================================
-   3. PAGE ROUTING
+   3. PAGE ROUTING  (with History API for clean URLs)
    ============================================================ */
 
-function go(id, btn) {
+/* Map of page id → URL path */
+var PAGE_PATHS = {
+  'home':         '/',
+  'services':     '/services',
+  'about':        '/about',
+  'testimonials': '/testimonials',
+  'contact':      '/contact',
+  'book':         '/book'
+};
+
+/* Reverse map: path → page id */
+var PATH_PAGES = {};
+Object.keys(PAGE_PATHS).forEach(function (id) {
+  PATH_PAGES[PAGE_PATHS[id]] = id;
+});
+
+function showPage(id) {
   document.querySelectorAll('.pg').forEach(function (p) { p.classList.remove('on'); });
   var target = document.getElementById('p-' + id);
   if (target) target.classList.add('on');
+
+  /* Sync active nav link */
   document.querySelectorAll('.nl').forEach(function (n) { n.classList.remove('act'); });
-  if (btn) btn.classList.add('act');
+  var activeBtn = document.querySelector('.nl[onclick*="go(\'' + id + '\'"]');
+  if (activeBtn) activeBtn.classList.add('act');
+
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
   /* Re-trigger counters & bars when navigating back to home */
@@ -127,6 +147,33 @@ function go(id, btn) {
       runAllBars();
     }, 200);
   }
+}
+
+function go(id, btn) {
+  var path = PAGE_PATHS[id] || '/';
+
+  /* Push new URL into browser history */
+  history.pushState({ page: id }, '', path);
+
+  showPage(id);
+
+  /* Sync active nav button if passed explicitly */
+  if (btn) {
+    document.querySelectorAll('.nl').forEach(function (n) { n.classList.remove('act'); });
+    btn.classList.add('act');
+  }
+}
+
+/* Handle browser Back / Forward buttons */
+window.addEventListener('popstate', function (e) {
+  var id = (e.state && e.state.page) ? e.state.page : getPageFromPath(location.pathname);
+  showPage(id);
+});
+
+/* Resolve current URL path to a page id on first load */
+function getPageFromPath(pathname) {
+  var clean = pathname.replace(/\/$/, '') || '/';
+  return PATH_PAGES[clean] || PATH_PAGES['/' + clean.replace(/^\//, '')] || 'home';
 }
 
 /* ============================================================
@@ -513,4 +560,9 @@ document.addEventListener('DOMContentLoaded', function () {
   /* Counters & bars use IntersectionObserver — fire when visible */
   initCountersObserver();
   initBarsObserver();
+
+  /* Load correct page based on current URL (handles direct links & refresh) */
+  var startPage = getPageFromPath(location.pathname);
+  history.replaceState({ page: startPage }, '', PAGE_PATHS[startPage] || '/');
+  showPage(startPage);
 });
