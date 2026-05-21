@@ -122,6 +122,57 @@ var PAGE_PATHS = {
   'book':         '/book'
 };
 
+/* ── Per-page meta data ── */
+var PAGE_META = {
+  'home': {
+    title:       'Best Weight Loss Center in Ahmedabad | Fit & Shine',
+    description: 'Fit & Shine Ahmedabad offers personalized weight loss programs, fat loss coaching, diet consultation & wellness guidance to help you achieve healthy and sustainable results.',
+    keywords:    'best weight loss center in Ahmedabad, weight loss program Ahmedabad, fat loss center Ahmedabad, dietician Ahmedabad, nutritionist Ahmedabad, wellness coach Ahmedabad'
+  },
+  'services': {
+    title:       'Weight Loss Programs & Diet Consultation in Ahmedabad | Fit & Shine',
+    description: 'Explore personalized weight loss programs, diet consultation, nutrition coaching & wellness services at Fit & Shine Ahmedabad for healthy lifestyle transformation.',
+    keywords:    'weight loss programs Ahmedabad, diet consultation Ahmedabad, fat loss program Ahmedabad, nutrition coaching Ahmedabad, wellness services Ahmedabad'
+  },
+  'about': {
+    title:       'Weight Loss & Weight Gain Center in Ahmedabad | About Fit & Shine',
+    description: 'Learn more about Fit & Shine Ahmedabad, trusted for personalized weight loss programs, healthy weight gain plans, nutrition coaching and wellness transformation for men and women.',
+    keywords:    'weight loss center Ahmedabad, weight gain program Ahmedabad, nutrition coaching Ahmedabad, personalized diet consultation, wellness center Ahmedabad, healthy lifestyle transformation, fat loss coaching Ahmedabad'
+  },
+  'testimonials': {
+    title:       'Client Success Stories & Results | Fit & Shine Ahmedabad',
+    description: 'See real before & after transformations from Fit & Shine clients across Ahmedabad — weight loss, weight gain, and total body transformation results.',
+    keywords:    'weight loss results Ahmedabad, fitness transformation Ahmedabad, Fit and Shine reviews, weight loss success stories Ahmedabad'
+  },
+  'contact': {
+    title:       'Contact Fit & Shine Wellness Centre | Ahmedabad',
+    description: 'Get in touch with Fit & Shine Wellness Centre in Ahmedabad. Book a free consultation for personalized weight loss, nutrition coaching or wellness programs.',
+    keywords:    'contact Fit and Shine Ahmedabad, wellness center contact Ahmedabad, book weight loss consultation Ahmedabad'
+  },
+  'book': {
+    title:       'Book Free Consultation | Fit & Shine Wellness Centre Ahmedabad',
+    description: 'Book your free wellness consultation at Fit & Shine Ahmedabad. Get personalized guidance on weight loss, weight gain and nutrition from certified wellness coaches.',
+    keywords:    'book free consultation Ahmedabad, weight loss consultation Ahmedabad, free diet consultation Ahmedabad, wellness consultation Ahmedabad'
+  }
+};
+
+function updatePageMeta(id) {
+  var meta = PAGE_META[id] || PAGE_META['home'];
+  /* Title */
+  document.title = meta.title;
+  /* Description */
+  var descEl = document.querySelector('meta[name="description"]');
+  if (descEl) descEl.setAttribute('content', meta.description);
+  /* Keywords */
+  var kwEl = document.querySelector('meta[name="keywords"]');
+  if (kwEl) kwEl.setAttribute('content', meta.keywords);
+  /* OG tags */
+  var ogTitle = document.querySelector('meta[property="og:title"]');
+  if (ogTitle) ogTitle.setAttribute('content', meta.title);
+  var ogDesc = document.querySelector('meta[property="og:description"]');
+  if (ogDesc) ogDesc.setAttribute('content', meta.description);
+}
+
 /* Reverse map: path → page id */
 var PATH_PAGES = {};
 Object.keys(PAGE_PATHS).forEach(function (id) {
@@ -132,6 +183,9 @@ function showPage(id) {
   document.querySelectorAll('.pg').forEach(function (p) { p.classList.remove('on'); });
   var target = document.getElementById('p-' + id);
   if (target) target.classList.add('on');
+
+  /* Update meta title, description & keywords for this page */
+  updatePageMeta(id);
 
   /* Sync active nav link */
   document.querySelectorAll('.nl').forEach(function (n) { n.classList.remove('act'); });
