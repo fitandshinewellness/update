@@ -85,52 +85,57 @@
 
 .hs-btns {
   display: flex;
-  gap: 14px;
+  gap: 16px;
   flex-wrap: wrap;
+  margin-top: 8px;
 }
 
 .btn-h1 {
-  background: var(--y);
-  color: var(--g);
+  background: #B8892A;
+  color: #ffffff;
   font-weight: 800;
-  font-size: 15px;
-  padding: 14px 30px;
+  font-size: 16px;
+  padding: 16px 32px;
   border-radius: 8px;
   border: none;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   transition: .2s;
-  letter-spacing: .2px;
-  box-shadow: 0 4px 20px rgba(168,230,0,.45);
+  letter-spacing: .3px;
+  box-shadow: 0 4px 24px rgba(0,0,0,.45);
   cursor: pointer;
+  text-shadow: 0 1px 2px rgba(0,0,0,.2);
 }
 
 .btn-h1:hover {
-  background: #bdf500;
+  background: #a07520;
   transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(168,230,0,.55);
+  box-shadow: 0 8px 28px rgba(0,0,0,.55);
 }
 
 .btn-h2 {
-  background: rgba(255,255,255,.14);
-  color: #fff;
-  border: 2px solid rgba(255,255,255,.55);
+  background: transparent;
+  color: #ffffff;
+  border: 2.5px solid #ffffff;
   font-weight: 700;
-  font-size: 15px;
-  padding: 12px 26px;
+  font-size: 16px;
+  padding: 14px 30px;
   border-radius: 8px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   transition: .2s;
-  backdrop-filter: blur(4px);
   cursor: pointer;
+  text-shadow: 0 1px 3px rgba(0,0,0,.4);
+  box-shadow: 0 4px 16px rgba(0,0,0,.3);
 }
 
 .btn-h2:hover {
-  background: rgba(255,255,255,.22);
+  background: rgba(255,255,255,.18);
   border-color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.4);
 }
 
 .hs-arrow {
